@@ -9,7 +9,7 @@ def get_tasks():
     return jsonify({'tasks': json_tasks})
 
 
-@app.route("create_task", methods=['POST'])
+@app.route("/create_task", methods=['POST'])
 def create_task():
     title = request.json.get['title']
     description = request.json.get['description']
