@@ -1,7 +1,25 @@
-import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
 
-const TaskList = ({ tasks }) => {
+const TaskList = ({ tasks, updateTask, updateCallback }) => {
+  const onDelete = async (id) => {
+    try {
+      const options = {
+        method: "DELETE",
+      };
+      const response = await fetch(
+        `http://127.0.0.1:5000/delete_task/${id}`,
+        options
+      );
+      if (response.status === 200) {
+        updateCallback();
+      } else {
+        console.error("Failed to delete");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <div className="bg-[#b9c5cd] mt-10 w-full h-full rounded-xl flex flex-col items-center py-10 gap-5">
       <div className=" flex gap-3 justify-center items-center">
@@ -14,13 +32,42 @@ const TaskList = ({ tasks }) => {
           Make tasks fantastic!
         </h1>
       </div>
-      <div>
-        <TaskForm />
+      <div className="w-full">
+        <TaskForm updateCallback={updateCallback} />
       </div>
       <div className="flex flex-col gap-3 w-full px-14 mt-10">
         {tasks.map((task) => (
           <div key={task.id}>
-            <TaskItem task={task} />
+            <div className="flex justify-between items-center gap-3">
+              <h1 className="text-xl text-center text-[#2596be] font-mono ">
+                {task.title}
+              </h1>
+              <div className="flex gap-1">
+                <button className="" onClick={() => updateTask(task)}>
+                  <img
+                    src="/assets/images/edit-task.png"
+                    alt="edit"
+                    className="w-8 h-8"
+                  />
+                </button>
+                <button className="" onClick={() => onDelete(task.id)}>
+                  <img
+                    src="/assets/images/delete.png"
+                    alt="delete"
+                    className="w-8 h-8"
+                  />
+                </button>
+                <button className="">
+                  {task.done === true && (
+                    <img
+                      src="/assets/images/check.png"
+                      alt="delete"
+                      className="w-8 h-8"
+                    />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
