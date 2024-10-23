@@ -28,7 +28,6 @@ function App() {
   };
 
   const openEditModal = (task) => {
-    console.log("Opening modal for task:", task);
     if (isModalOpen) return;
     setCurrentTask(task);
     setIsModalOpen(true);

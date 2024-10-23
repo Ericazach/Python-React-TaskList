@@ -1,6 +1,9 @@
 import TaskForm from "./TaskForm";
+// import { useState } from "react";
 
 const TaskList = ({ tasks, updateTask, updateCallback }) => {
+  // const [localTasks, setLocalTasks] = useState(tasks);
+
   const onDelete = async (id) => {
     try {
       const options = {
@@ -14,6 +17,32 @@ const TaskList = ({ tasks, updateTask, updateCallback }) => {
         updateCallback();
       } else {
         console.error("Failed to delete");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const toggleTaskStatus = async (task) => {
+    try {
+      const updatedTask = { ...task, done: !task.done };
+      const options = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      };
+      const response = await fetch(
+        `http://127.0.0.1:5000/update_task/${task.id}`,
+        options
+      );
+      if (response.status === 200) {
+        tasks.map((t) => (t.id === task.id ? updatedTask : t));
+
+        updateCallback();
+      } else {
+        console.error("Failed to update task status");
       }
     } catch (error) {
       alert(error);
@@ -39,7 +68,12 @@ const TaskList = ({ tasks, updateTask, updateCallback }) => {
         {tasks.map((task) => (
           <div key={task.id}>
             <div className="flex justify-between items-center gap-3">
-              <h1 className="text-xl text-center text-[#2596be] font-mono ">
+              <h1
+                className={`text-xl text-center text-[#2596be] font-mono cursor-pointer ${
+                  task.done ? "line-through" : ""
+                }`}
+                onClick={() => toggleTaskStatus(task)}
+              >
                 {task.title}
               </h1>
               <div className="flex gap-1">

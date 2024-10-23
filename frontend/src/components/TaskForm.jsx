@@ -25,7 +25,6 @@ const TaskForm = ({ existingTask = {}, updateCallback }) => {
       const data = await response.json();
       setTitle("");
       updateCallback();
-      console.log(data);
       // Handle successful task creation (e.g., clear input, update task list)
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
