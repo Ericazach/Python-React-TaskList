@@ -11,22 +11,24 @@ def get_tasks():
 
 @app.route("/create_task", methods=['POST'])
 def create_task():
-    title = request.json.get['title']
-    description = request.json.get['description']
-    done = request.json.get['done']
+    data = request.json
+    title = data.get('title')
+    done = data.get('done', False)
     
-    if not title or not description:
-        return jsonify({'message': 'Title, Description are required'}), 400
+    if not title:
+        return jsonify({'message': 'Title is required'}), 400
     
-    new_task = Task(title=title, description=description, done=done)
+    new_task = Task(title=title, done=done)
     
     try:
         db.session.add(new_task)
         db.session.commit()
     except Exception as e:
-        return jsonify({'message': str(e)}), 400
+        db.session.rollback()
+        app.logger.error(f"Error creating task: {str(e)}")
+        return jsonify({'message': 'An error occurred while creating the task'}), 500
     
-    return jsonify({'message': 'Task created successfully'}), 201
+    return jsonify({'message': 'Task created successfully', 'task': new_task.to_json()}), 201
 
 @app.route("/update_task/<int:task_id>", methods=['PATCH'])
 
@@ -37,7 +39,6 @@ def update_task(task_id):
     
     data = request.json 
     task.title = data.get("title", task.title)
-    task.description = data.get("description", task.description)
     task.done = data.get("done", task.done)
     
     db.session.commit()

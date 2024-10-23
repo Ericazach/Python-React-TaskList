@@ -3,8 +3,8 @@ import TaskForm from "./TaskForm";
 
 const TaskList = ({ tasks }) => {
   return (
-    <div className="bg-[#b9c5cd] mt-10 w-full h-full rounded-xl flex flex-col items-center">
-      <div className="p-10 flex gap-3 justify-center items-center">
+    <div className="bg-[#b9c5cd] mt-10 w-full h-full rounded-xl flex flex-col items-center py-10 gap-5">
+      <div className=" flex gap-3 justify-center items-center">
         <img
           src="/assets/images/image.webp"
           alt="to-do"
@@ -17,7 +17,7 @@ const TaskList = ({ tasks }) => {
       <div>
         <TaskForm />
       </div>
-      <div>
+      <div className="flex flex-col gap-3 w-full px-14 mt-10">
         {tasks.map((task) => (
           <div key={task.id}>
             <TaskItem task={task} />

@@ -17,7 +17,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center">
+    <div className="flex flex-col w-1/3 items-center justify-center mt-10 mx-auto">
       <TaskList tasks={tasks} />
     </div>
   );
