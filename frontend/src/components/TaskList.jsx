@@ -57,7 +57,7 @@ const TaskList = ({ tasks, updateTask, updateCallback }) => {
           alt="to-do"
           className="rounded-full w-16 h-16 md:w-28 md:h-28"
         />
-        <h1 className="text-sm md:text-2xl italic text-neutral-600 text-center">
+        <h1 className="text-sm md:text-2xl italic text-neutral-600 text-center underline">
           Make tasks fantastic!
         </h1>
       </div>
